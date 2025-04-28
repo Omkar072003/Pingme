@@ -2,26 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Room</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
-    <div class="chat-container">
-        <div class="sidebar">
-            <h3>Online Users</h3>
-            <ul id="users"></ul>
+<body class="bg-gray-100 min-h-screen flex">
+    <div class="flex-1 flex flex-col lg:flex-row max-w-7xl mx-auto w-full">
+        <!-- Sidebar -->
+        <div id="sidebar"
+             class="bg-white lg:bg-transparent w-full lg:w-64 p-4 lg:p-6 shadow-lg lg:shadow-none transform lg:transform-none transition-transform duration-300 fixed lg:static top-0 left-0 h-full lg:h-auto z-20 hidden lg:block">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Online Users</h3>
+                <button id="close-sidebar" class="lg:hidden text-gray-600 hover:text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <ul id="users" class="space-y-2"></ul>
         </div>
 
-        <div class="chat-box">
-            <div id="messages"></div>
-            <div id="typing"></div>
-            <form id="chat-form">
-                <input id="message-input" autocomplete="off" placeholder="Type a message..." /><button>Send</button>
+        <!-- Chat Box -->
+        <div class="flex-1 flex flex-col bg-white rounded-lg shadow-xl m-4 lg:m-0">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h2 class="text-xl font-semibold text-gray-800">Chat Room</h2>
+                <button id="toggle-sidebar" class="lg:hidden text-gray-600 hover:text-gray-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="messages" class="flex-1 p-4 overflow-y-auto"></div>
+            <div id="typing" class="p-2 text-sm text-gray-500"></div>
+            <form id="chat-form" class="p-4 border-t">
+                <div class="flex space-x-2">
+                    <input id="message-input" autocomplete="off" placeholder="Type a message..."
+                           class="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                    <button type="submit"
+                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition transform hover:scale-105">
+                        Send
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/chat.js"></script>
+    <script>
+        const toggleSidebar = document.getElementById('toggle-sidebar');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const sidebar = document.getElementById('sidebar');
+
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+
+        closeSidebar.addEventListener('click', () => {
+            sidebar.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>
